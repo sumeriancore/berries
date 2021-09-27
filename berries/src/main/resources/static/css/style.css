@@ -1,7 +1,6 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css");
 
 body{
-    background-color:rgb(226, 213, 238);
     position: fixed;
     top: 0;
     left: 0;
@@ -49,4 +48,56 @@ body{
 
 .form-label{
     color:black;
+}
+
+.navbar{
+    background-color: rgba(159, 168, 247, 0.5);
+}
+
+a{
+    color:black;
+}
+
+.shopName{
+    background-color:rgba(159, 168, 247, 0.8);
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.ni-1, .ni-2{
+    margin-left: 10px;
+    background-color:rgba(159, 168, 247, 0.6);
+    border-radius: 10px;
+}
+
+.nav-link{
+    color:black;
+    font-weight: 500;
+}
+
+.nav-link.active{
+    color:black;
+}
+
+.back-image-main{
+    width: 1050px;
+    height: 700px;
+    background-image:url(../pictures/mainBerry.png);
+    margin-top: -9.75%;
+}
+
+.bl-info{
+    width: 700px;
+    height: 300px;
+    background-color:rgba(159, 168, 247, 0.7);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -30%;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.main-text{
+    padding-top: 15%;
+    font-weight: 500;
 }
