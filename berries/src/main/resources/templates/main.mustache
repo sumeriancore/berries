@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>BlueBerries BY</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -32,6 +32,10 @@
             </div>
         </div>
     </nav>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <input type="submit" value="Sign Out">
+    </form>
 </header>
 <div class="back-image-main">
 
