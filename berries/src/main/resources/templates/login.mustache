@@ -1,15 +1,30 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
 <head>
     <title>BlueBerries BY</title>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-<form action="/login" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-    <div><input type="submit" value="Sign In"/></div>
-</form>
+<div class="back-image">
+    <div class="back">
+        <div class="reg-form-div">
+            <form action="/login" method="post">
+                <div class="mb-3">
+                    <label for="userEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" aria-describedby="emailHelp" name="username">
+                </div>
+                <div class="mb-4">
+                    <label for="userPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
