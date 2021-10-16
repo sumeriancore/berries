@@ -1,13 +1,15 @@
 package com.by.blue.berries.main.controller;
 
+import com.by.blue.berries.domain.Role;
 import com.by.blue.berries.domain.User;
 import com.by.blue.berries.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Collections;
+import java.util.Map;
 
 @Controller
 public class RegistrationPageController {
@@ -15,17 +17,24 @@ public class RegistrationPageController {
     @Autowired
     private UserRepository userRepo;
 
-    @PostMapping("/registration")
-    public String createUser(@RequestParam String userEmail, @RequestParam String userPassword){
-
-        User user = new User(userEmail, userPassword);
-        userRepo.save(user);
-
-        return "main";
+    @GetMapping("/registration")
+    public String registration(){
+        return "registration";
     }
 
-    @GetMapping("/registration")
-    public String registrationPage(){
-        return "registration";
+    @PostMapping("/registration")
+    public String addUser(User user, Map<String, Object> model){
+        User userFromDb = userRepo.findByUsername(user.getUsername());
+
+        if(userFromDb != null){
+            model.put("message", "User exists");
+            return "registration";
+        }
+
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        userRepo.save(user);
+
+        return "redirect:/login";
     }
 }

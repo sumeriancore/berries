@@ -8,19 +8,23 @@
     <link type="text/css" rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
+{{#message}}
+    {{message}}
+{{/message}}
 <div class="back-image">
     <div class="back">
         <div class="reg-form-div">
-            <form method="post">
+            <form action="/registration" method="post">
                 <div class="mb-3">
                     <label for="userEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" name="userEmail">
+                    <input type="text" class="form-control" aria-describedby="emailHelp" name="username">
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-4">
                     <label for="userPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="userPassword" name="userPassword">
+                    <input type="password" class="form-control" name="password">
                 </div>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}">
                 <button type="submit" class="btn">Submit</button>
             </form>
         </div>
