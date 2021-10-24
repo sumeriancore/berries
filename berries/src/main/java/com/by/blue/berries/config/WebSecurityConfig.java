@@ -16,9 +16,6 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private UserService userService;
-
     @Autowired
     private DataSource dataSource;
 
@@ -29,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/static/**").permitAll()
                     .antMatchers("/page/login**").permitAll()
-                    .antMatchers("/registration").permitAll()
+                    .antMatchers("/registration", "/main", "/admin").permitAll()
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -37,13 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/page/login").permitAll()
                     .usernameParameter("username").passwordParameter("password")
                     .defaultSuccessUrl("/main", true)
+                    .permitAll()
+                    .and()
+                .logout()
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .logoutSuccessUrl("/page/login")
                     .permitAll();
-//                    .and()
-//                .logout()
-//                    .invalidateHttpSession(true)
-//                    .clearAuthentication(true)
-//                    .logoutSuccessUrl("/page/login")
-//                    .permitAll();
     }
 
     @Override

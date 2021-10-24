@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <title>BlueBerries BY</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -28,24 +28,32 @@
                             <a class="nav-link active" href="/registration">Registration</a>
                         </li>
                     </div>
-                        <form action="/logout" method="post">
-                            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-                            <button type="submit" class="btn btn-outline-primary">Logout</button>
-                        </form>
+                    <div class="ni-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/products">Products</a>
+                        </li>
+                    </div>
+                    <div class="ni-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin">Admin</a>
+                        </li>
+                    </div>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<div class="back-image-main">
-
-</div>
-<div class="bl-info">
-    <div class="main-text">
-        Вид листопадных кустарников из рода Вакциниум семейства Вересковые.
-        Типовой вид этого рода.
-        Является ближайшей родственницей брусники и черники
+<form action="/admin" method="post">
+    <p>Product Name: <input type="text" name="productName" /></p>
+    <p>Price: <input type="text" name="price"/></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+</form>
+<#list products as product>
+    <div>
+        <b>${product.productName}</b>
+        <span>${product.price}</span>
     </div>
-</div>
+</#list>
 </body>
 </html>
