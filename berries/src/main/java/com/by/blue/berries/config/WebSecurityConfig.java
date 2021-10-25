@@ -1,5 +1,6 @@
 package com.by.blue.berries.config;
 
+import com.by.blue.berries.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,13 +26,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/static/**").permitAll()
-                    .antMatchers("/page/login**").permitAll()
-                    .antMatchers("/registration", "/main", "/admin").permitAll()
+                    .antMatchers("/login**").permitAll()
+                    .antMatchers("/registration").permitAll()
+                    .antMatchers("/admin", "/admin/users").permitAll()
                     .anyRequest()
                     .authenticated()
                     .and()
                 .formLogin()
-                    .loginPage("/page/login").permitAll()
+                    .loginPage("/login").permitAll()
                     .usernameParameter("username").passwordParameter("password")
                     .defaultSuccessUrl("/main", true)
                     .permitAll()
@@ -39,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
-                    .logoutSuccessUrl("/page/login")
+                    .logoutSuccessUrl("/login")
                     .permitAll();
     }
 

@@ -35,6 +35,6 @@ public class RegistrationPageController {
         user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);
 
-        return "redirect:/page/login";
+        return "redirect:/login";
     }
 }

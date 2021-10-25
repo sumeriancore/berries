@@ -1,37 +1,70 @@
 package com.by.blue.berries.main.controller;
 
 import com.by.blue.berries.domain.Product;
+import com.by.blue.berries.domain.Role;
+import com.by.blue.berries.domain.User;
 import com.by.blue.berries.repos.ProductRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.by.blue.berries.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private UserRepository userRepo;
+
     @GetMapping
     public String productsFormAdd(Model model){
         model.addAttribute("adminPage", new Product());
-//        model.addAttribute("products", productRepository.findAll().stream().map(b -> new Gson().toJson(b)).collect(Collectors.toList()));
         model.addAttribute("products", productRepository.findAll());
-        System.out.println(model.asMap());
         return "adminPage";
     }
 
+    @GetMapping("/users")
+    public String userList(Model model){
+        model.addAttribute("users", userRepo.findAll());
+        return "userList";
+    }
+
+    @GetMapping("/users/{user}")
+    public String userEditForm(@PathVariable User user, Model model){
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Role.values());
+        return "userEditForm";
+    }
+
     @PostMapping
-    public String greetingSubmit(@ModelAttribute Product product, @RequestParam String productName, @RequestParam Double price) {
-        product.setPrice(price);
-        product.setProductName(productName);
-        productRepository.save(product);
-        return "redirect:/admin";
+    public String userUpdate(@RequestParam("id") User user,
+                             @RequestParam Map<String, String> form,
+                             @RequestParam String username){
+        user.setUsername(username);
+
+        Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
+
+        user.getRoles().clear();
+
+        for(String key : form.keySet()){
+            if(roles.contains(key)){
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+
+        userRepo.save(user);
+
+        return "redirect:/admin/users";
     }
 }
