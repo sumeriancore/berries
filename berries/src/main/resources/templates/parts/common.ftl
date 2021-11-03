@@ -31,7 +31,17 @@
                         </div>
                         <div class="ni-2">
                             <li class="nav-item">
-                                <a class="nav-link active" href="/products">Products</a>
+                                <a class="nav-link active" href="/admin/products">Products</a>
+                            </li>
+                        </div>
+                        <div class="ni-2">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/admin/users">Users</a>
+                            </li>
+                        </div>
+                        <div class="ni-2">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/logout">Log Out</a>
                             </li>
                         </div>
                     </ul>
@@ -41,6 +51,7 @@
     </header>
     <#nested >
     </body>
+    <script type="text/javascript" src="/static/js/index.js"></script>
 </html>
 </#macro>
 
@@ -61,6 +72,29 @@
     </html>
 </#macro>
 
+<#macro productEditForm product>
+    <div id="${product.id}" class="modal">
+        <div class="modal-content">
+            <span class="closeEdit">&times;</span>
+            <form action="/admin/products" method="post">
+                <input type="hidden" class="form-control" id="id" name="id"
+                       value="${product.id}">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" class="form-control" id="productName" name="productName" aria-describedby="emailHelp"
+                    value="${product.productName}">
+                </div>
+                <div class="form-group">
+                    <label for="price">Edit Price</label>
+                    <input type="text" class="form-control" id="price" name="price" value="${product.price}">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+            </form>
+        </div>
+    </div>
+</#macro>
+
 <#macro loginOrRegistration path>
     <div class="back-image">
         <div class="back">
@@ -75,7 +109,7 @@
                         <input type="password" class="form-control" name="password">
                     </div>
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button type="submit" class="btn">Submit</button>
+                    <button type="submit" id="logRegBtn" class="btn">Submit</button>
                 </form>
             </div>
         </div>

@@ -27,11 +27,17 @@ public class AdminController {
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping
+    @GetMapping("/products")
     public String productsFormAdd(Model model){
         model.addAttribute("adminPage", new Product());
         model.addAttribute("products", productRepository.findAll());
-        return "adminPage";
+        return "productList";
+    }
+
+    @PostMapping("/products")
+    public String addProduct(Product product){
+        productRepository.save(product);
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/users")
@@ -66,5 +72,16 @@ public class AdminController {
         userRepo.save(user);
 
         return "redirect:/admin/users";
+    }
+
+    @PostMapping("/product/{id}/edit")
+    public String productUpdate(@RequestParam Map<String, String> form,
+                                @PathVariable Long id){
+        Product product = productRepository.getById(id);
+        productRepository.delete(product);
+        product.setProductName(form.get("productName"));
+        product.setPrice(Double.parseDouble(form.get("price")));
+        productRepository.save(product);
+        return "redirect:/admin/products";
     }
 }
