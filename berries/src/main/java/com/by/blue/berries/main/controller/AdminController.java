@@ -6,20 +6,30 @@ import com.by.blue.berries.domain.User;
 import com.by.blue.berries.repos.ProductRepository;
 import com.by.blue.berries.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
     private ProductRepository productRepository;
@@ -35,7 +45,21 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public String addProduct(Product product){
+    public String addProduct(Product product,
+                             @RequestParam("file")MultipartFile file) throws IOException {
+        if(file != null){
+           File uploadFolder = new File(uploadPath);
+           if(!uploadFolder.exists()){
+               uploadFolder.mkdir();
+           }
+
+           String uuidFile = UUID.randomUUID().toString();
+           String resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+           file.transferTo(new File(uploadPath+ "/" +resultFileName));
+
+           product.setFilename(resultFileName);
+        }
         productRepository.save(product);
         return "redirect:/admin/products";
     }
@@ -78,10 +102,17 @@ public class AdminController {
     public String productUpdate(@RequestParam Map<String, String> form,
                                 @PathVariable Long id){
         Product product = productRepository.getById(id);
-        productRepository.delete(product);
         product.setProductName(form.get("productName"));
         product.setPrice(Double.parseDouble(form.get("price")));
-        productRepository.save(product);
+        productRepository.updateProductById(Double.parseDouble(form.get("price")), form.get("productName"), id);
+        return "redirect:/admin/products";
+    }
+
+    @PostMapping("/product/{id}/delete")
+    public String productDelete(@PathVariable Long id) throws IOException {
+        Product product = productRepository.getById(id);
+        Files.deleteIfExists(Paths.get(uploadPath.substring(1)+"/"+product.getFilename()));
+        productRepository.delete(product);
         return "redirect:/admin/products";
     }
 }

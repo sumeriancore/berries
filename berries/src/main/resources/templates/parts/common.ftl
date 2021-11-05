@@ -76,7 +76,7 @@
     <div id="${product.id}" class="modal">
         <div class="modal-content">
             <span class="closeEdit">&times;</span>
-            <form action="/admin/products" method="post">
+            <form action="/admin/product/${product.id}/edit" method="post">
                 <input type="hidden" class="form-control" id="id" name="id"
                        value="${product.id}">
                 <div class="form-group">
@@ -114,4 +114,14 @@
             </div>
         </div>
     </div>
+</#macro>
+
+<#macro deleteProductForm product>
+    <form action="/admin/product/${product.id}/delete" method="post">
+        <input type="hidden" class="form-control" id="id" name="id" value="${product.id}">
+        <input type="hidden" class="form-control" id="productName" name="productName" value="${product.productName}">
+        <input type="hidden" class="form-control" id="price" name="price" value="${product.price}">
+        <button type="submit" class="btn btn-primary">Delete</button>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+    </form>
 </#macro>

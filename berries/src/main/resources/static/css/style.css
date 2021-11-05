@@ -127,3 +127,8 @@ a{
     text-decoration: none;
     cursor: pointer;
 }
+
+.productImage{
+    height: 100px;
+    width: 100px;
+}
